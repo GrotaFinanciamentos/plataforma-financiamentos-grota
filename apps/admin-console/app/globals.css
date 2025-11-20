@@ -7,7 +7,6 @@
   --font-*: initial;
   --font-outfit: Outfit, sans-serif;
 
-/* Breakpoints padrões para responsividade */
 
 /* Valor inicial / default (sem breakpoint específico) */
 --breakpoint-*: initial;
