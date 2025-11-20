@@ -6,18 +6,20 @@ type VerificationTokenParams = {
 };
 
 interface VerificationTokenProps {
-  searchParams: Promise<VerificationTokenParams>;
+  searchParams?: VerificationTokenParams;
 }
 
-export default async function VerificationToken({
+export default function VerificationToken({
   searchParams,
 }: VerificationTokenProps) {
-  const params = await searchParams;
+  const params = searchParams ?? {};
+  const tokenType =
+    params.tipo === "redefinicao-senha" ? params.tipo : "verificacao";
 
   return (
     <VerifyTokenPage
       heroImageSrc="https://res.cloudinary.com/dx1659yxu/image/upload/v1760451243/linda-mulher-comprando-um-carro_lp9oo0.jpg"
-      tokenType={params.tipo ?? "verificacao"}
+      tokenType={tokenType}
       email={params.email ?? ""}
     />
   );
