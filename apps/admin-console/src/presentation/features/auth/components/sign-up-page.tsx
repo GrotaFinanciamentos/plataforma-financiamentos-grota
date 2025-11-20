@@ -1,15 +1,15 @@
-"use client"
+'use client';
 
-import type React from "react"
-import { useState } from "react"
-import { Eye, Loader2,  } from "lucide-react"
-import { SignUpPageProps } from "@/application/core/@types/auth/Props/SignUpPageProps"
-import z from "zod"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useAuth } from "@/application/services/auth/hooks/useAuth"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
+import type React from "react";
+import { useState } from "react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { SignUpPageProps } from "@/application/core/@types/auth/Props/SignUpPageProps";
+import z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "@/application/services/auth/hooks/useAuth";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const GlassInputWrapper = ({ children }: { children: React.ReactNode }) => (
   <div className="rounded-2xl border border-[#1B4B7C]/50 bg-white backdrop-blur-sm transition-colors focus-within:border-[#1B4B7C]/80 ">
@@ -55,8 +55,8 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
   });
   const router = useRouter();
   
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = async (data: RegisterFormData) => {
     const result = await signUp(data);
@@ -67,6 +67,8 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
       setTimeout(() => {
         router.push(`/verificacao-token?tipo=verificacao&email=${data.email}`)
       }, 1500);
+    } else {
+      toast.error(result.message);
     }
   };
 
@@ -135,7 +137,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
                       disabled={isLoading}
                     >
                       {showPassword ? (
-                        <Eye className="w-5 h-5 text-[#1B4B7C] hover:text-[#0F2C55] transition-colors" />
+                        <EyeOff className="w-5 h-5 text-[#1B4B7C] hover:text-[#0F2C55] transition-colors" />
                       ) : (
                         <Eye className="w-5 h-5 text-[#1B4B7C] hover:text-[#0F2C55] transition-colors" />
                       )}
@@ -167,7 +169,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
                       disabled={isLoading}
                     >
                       {showConfirmPassword ? (
-                       <Eye className="w-5 h-5 text-[#1B4B7C] hover:text-[#0F2C55] transition-colors" />
+                       <EyeOff className="w-5 h-5 text-[#1B4B7C] hover:text-[#0F2C55] transition-colors" />
                       ) : (
                         <Eye className="w-5 h-5 text-[#1B4B7C] hover:text-[#0F2C55] transition-colors" />
                       )}
@@ -200,7 +202,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
               <button
                 type="submit"
                 disabled={isLoading || !isDirty || !isValid}
-                className="animate-element animate-delay-800 w-full text-md rounded-2xl bg-[#1B4B7C] py-4 font-medium text-white hover:bg-[#0F2C55] transition-colors"
+                className="animate-element animate-delay-800 w-full text-md rounded-2xl bg-[#1B4B7C] py-4 font-medium text-white hover:bg-[#0F2C55] transition-colors flex items-center justify-center gap-2"
               >
                 {isLoading ? (
                   <>
@@ -211,6 +213,12 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
                   "Criar Conta"
                 )}
               </button>
+
+              {error && (
+                <p className="animate-element animate-delay-900 text-center text-sm text-red-600">
+                  {error}
+                </p>
+              )}
             </form>
 
             <p className="animate-element animate-delay-1100 text-center text-md text-[#1B4B7C]/80">
