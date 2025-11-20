@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { User } from "lucide-react";
 import { Dropdown } from "../../components/ui/dropdown/Dropdown";
 import { DropdownItem } from "../../components/ui/dropdown/DropdownItem";
@@ -13,7 +12,6 @@ export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<AuthenticatedUser | null>(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
     let mounted = true;
@@ -56,7 +54,8 @@ export default function UserDropdown() {
     } catch (error) {
       console.error("[admin] erro ao sair", error);
     } finally {
-      router.push("/");
+      setIsOpen(false);
+      window.location.href = "/";
     }
   };
 
