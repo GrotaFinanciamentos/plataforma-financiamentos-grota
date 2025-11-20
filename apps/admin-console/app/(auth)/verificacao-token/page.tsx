@@ -6,13 +6,13 @@ type VerificationTokenParams = {
 };
 
 interface VerificationTokenProps {
-  searchParams?: VerificationTokenParams;
+  searchParams?: Promise<VerificationTokenParams>;
 }
 
-export default function VerificationToken({
+export default async function VerificationToken({
   searchParams,
 }: VerificationTokenProps) {
-  const params = searchParams ?? {};
+  const params = (await searchParams) ?? {};
   const tokenType =
     params.tipo === "redefinicao-senha" ? params.tipo : "verificacao";
 
