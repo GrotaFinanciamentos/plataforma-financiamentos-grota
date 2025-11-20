@@ -1,0 +1,36 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "run-java": {
+      "dependsOn": [],
+      "outputs": []
+    },
+    "test:e2e": {
+      "dependsOn": ["grota-website#build"],
+      "outputs": []
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "check-types": {
+      "dependsOn": ["^check-types"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
+  },
+  "globalEnv": [
+    "NEXT_PUBLIC_URL_API",
+    "LOGISTA_SESSION_SECRET",
+    "LOGISTA_API_BASE_URL",
+    "ADMIN_SESSION_SECRET",
+    "NEXT_PUBLIC_LOGISTA_PANEL_URL"
+  ]
+}
