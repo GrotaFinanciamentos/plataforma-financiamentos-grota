@@ -133,12 +133,15 @@ export async function POST(request: NextRequest) {
 
     const encodedSession = await encryptSession(sessionPayload, SESSION_SECRET);
 
+    const isCrossSite = origin && origin !== request.nextUrl.origin;
+    const sameSite = isCrossSite ? "none" : "lax";
+
     const cookieStore = await cookies();
     cookieStore.set({
       name: LOGISTA_SESSION_COOKIE,
       value: encodedSession,
       httpOnly: true,
-      sameSite: "lax",
+      sameSite,
       secure: process.env.NODE_ENV === "production",
       maxAge: LOGISTA_SESSION_MAX_AGE,
       path: "/",
