@@ -26,6 +26,7 @@ import {
 import { StatusLegend } from "./components/StatusLegend";
 import { QueueFilters } from "./components/QueueFilters";
 import { ProposalsTable } from "./components/ProposalsTable";
+import { ProposalDetailsSheet } from "./components/ProposalDetailsSheet";
 
 const REALTIME_URL = process.env.NEXT_PUBLIC_REALTIME_WS_URL;
 const ADMIN_PROPOSALS_IDENTITY = "admin-esteira";
@@ -87,6 +88,8 @@ export default function EsteiraDePropostasFeature() {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [updatingId, setUpdatingId] = useState<number | null>(null);
+  const [selectedProposal, setSelectedProposal] = useState<Proposal | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   const { messages, sendMessage } = useRealtimeChannel({
     channel: REALTIME_CHANNELS.PROPOSALS,
@@ -326,6 +329,16 @@ export default function EsteiraDePropostasFeature() {
     });
   };
 
+  const handleOpenDetails = (proposal: Proposal) => {
+    setSelectedProposal(proposal);
+    setIsDetailsOpen(true);
+  };
+
+  const handleCloseDetails = () => {
+    setIsDetailsOpen(false);
+    setTimeout(() => setSelectedProposal(null), 150);
+  };
+
   return (
     <div className="space-y-6">
       <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
@@ -349,6 +362,13 @@ export default function EsteiraDePropostasFeature() {
         isLoading={isLoading}
         onStatusChange={handleStatusUpdate}
         updatingId={updatingId}
+        onOpenDetails={handleOpenDetails}
+      />
+
+      <ProposalDetailsSheet
+        open={isDetailsOpen}
+        proposal={selectedProposal}
+        onClose={handleCloseDetails}
       />
     </div>
   );

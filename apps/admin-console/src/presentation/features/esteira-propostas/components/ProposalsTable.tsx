@@ -24,31 +24,36 @@ type ProposalsTableProps = {
   isLoading?: boolean;
   updatingId: number | null;
   onStatusChange: (proposal: Proposal, status: ProposalStatus) => void;
+  onOpenDetails: (proposal: Proposal) => void;
 };
 
-const statusStyles: Record<
+export const proposalStatusStyles: Record<
   ProposalStatus,
-  { wrapper: string; text: string; label: string }
+  { wrapper: string; text: string; label: string; badge: string }
 > = {
   SUBMITTED: {
     wrapper: "bg-sky-100 border-l-4 border-sky-500",
     text: "text-sky-700",
     label: "Enviada",
+    badge: "bg-sky-100 text-sky-700 border border-sky-200",
   },
   PENDING: {
     wrapper: "bg-amber-100 border-l-4 border-amber-500",
     text: "text-amber-700",
     label: "Pendente",
+    badge: "bg-amber-100 text-amber-800 border border-amber-200",
   },
   APPROVED: {
     wrapper: "bg-emerald-100 border-l-4 border-emerald-500",
     text: "text-emerald-700",
     label: "Aprovada",
+    badge: "bg-emerald-100 text-emerald-800 border border-emerald-200",
   },
   REJECTED: {
     wrapper: "bg-red-100 border-l-4 border-red-500",
     text: "text-red-700",
     label: "Recusada",
+    badge: "bg-red-100 text-red-800 border border-red-200",
   },
 };
 
@@ -58,6 +63,8 @@ const statusOptions: ProposalStatus[] = [
   "APPROVED",
   "REJECTED",
 ];
+
+const statusStyles = proposalStatusStyles;
 
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat("pt-BR", {
@@ -85,6 +92,7 @@ export function ProposalsTable({
   isLoading,
   updatingId,
   onStatusChange,
+  onOpenDetails,
 }: ProposalsTableProps) {
   return (
     <div className="rounded-lg border bg-card" data-oid="admin-table">
@@ -113,7 +121,7 @@ export function ProposalsTable({
                   </TableRow>
                 ))
               : proposals.map((proposal) => {
-                  const statusStyle = statusStyles[proposal.status];
+                  const statusStyle = proposalStatusStyles[proposal.status];
 
                   return (
                     <TableRow key={proposal.id} className="align-top" data-oid="data-row">
@@ -132,9 +140,13 @@ export function ProposalsTable({
                           <p className="text-xs text-muted-foreground">
                             {maskCpf(proposal.customerCpf)}
                           </p>
-                          <p className="text-xs font-medium text-sky-600">
+                          <button
+                            type="button"
+                            onClick={() => onOpenDetails(proposal)}
+                            className="text-left text-xs font-medium text-sky-600 hover:text-sky-700 underline underline-offset-2 transition-colors"
+                          >
                             Proposta #{proposal.id}
-                          </p>
+                          </button>
                         </div>
                       </TableCell>
                       <TableCell className="pt-5">
