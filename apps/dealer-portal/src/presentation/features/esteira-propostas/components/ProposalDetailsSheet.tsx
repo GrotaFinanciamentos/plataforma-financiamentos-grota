@@ -2,12 +2,12 @@
 
 import { Proposal } from "@/application/core/@types/Proposals/Proposal";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/presentation/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/presentation/ui/dialog";
 import { Badge } from "@/presentation/ui/badge";
 import { Separator } from "@/presentation/ui/separator";
 import { proposalStatusStyles } from "./ProposalsTable";
@@ -77,13 +77,10 @@ export function ProposalDetailsSheet({
     : null;
 
   return (
-    <Sheet open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <SheetContent
-        side="right"
-        className="w-full space-y-5 border-l bg-gradient-to-b from-[#0F2C55]/5 to-white px-0 sm:max-w-3xl"
-      >
-        <SheetHeader className="px-6 pt-4">
-          <SheetTitle className="flex items-center justify-between gap-3 text-xl">
+    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
+      <DialogContent className="max-h-[90vh] w-full max-w-5xl space-y-5 overflow-y-auto border border-[#1B4B7C]/20 bg-gradient-to-b from-[#0F2C55]/5 to-white px-0 sm:px-0">
+        <DialogHeader className="px-6 pt-4">
+          <DialogTitle className="flex items-center justify-between gap-3 text-xl">
             <div className="flex flex-col gap-1">
               <span className="text-xs uppercase tracking-[0.16em] text-[#1B4B7C]/70">
                 Detalhes da proposta
@@ -107,11 +104,11 @@ export function ProposalDetailsSheet({
                 </Badge>
               </div>
             </div>
-          </SheetTitle>
-          <SheetDescription className="text-sm text-[#1B4B7C]/80">
+          </DialogTitle>
+          <DialogDescription className="text-sm text-[#1B4B7C]/80">
             Visualize os detalhes, acompanhe o status e converse com nosso time em tempo real.
-          </SheetDescription>
-        </SheetHeader>
+          </DialogDescription>
+        </DialogHeader>
 
         {!proposal ? (
           <div className="px-6 pb-6 text-sm text-muted-foreground">
@@ -235,7 +232,7 @@ export function ProposalDetailsSheet({
             />
           </div>
         )}
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }
