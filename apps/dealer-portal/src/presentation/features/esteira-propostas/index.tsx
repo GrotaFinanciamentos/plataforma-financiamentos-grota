@@ -23,6 +23,7 @@ import { QueueFilters } from "./components/QueueFilters";
 import { ProposalsTable } from "./components/ProposalsTable";
 import { fetchAllSellers } from "@/application/services/Sellers/sellerService";
 import { fetchAllDealers } from "@/application/services/DealerServices/dealerService";
+import { ProposalDetailsSheet } from "./components/ProposalDetailsSheet";
 
 const REALTIME_URL = process.env.NEXT_PUBLIC_REALTIME_WS_URL;
 const LOGISTA_PROPOSALS_IDENTITY = "logista-esteira";
@@ -97,6 +98,8 @@ export function EsteiraDePropostasFeature() {
   const [dealerOptions, setDealerOptions] = useState<
     { value: string; label: string }[]
   >([]);
+  const [selectedProposal, setSelectedProposal] = useState<Proposal | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   const { messages, sendMessage } = useRealtimeChannel({
     channel: REALTIME_CHANNELS.PROPOSALS,
@@ -336,6 +339,16 @@ export function EsteiraDePropostasFeature() {
     router.push("/(logista)/simulacao");
   };
 
+  const handleOpenDetails = (proposal: Proposal) => {
+    setSelectedProposal(proposal);
+    setIsDetailsOpen(true);
+  };
+
+  const handleCloseDetails = () => {
+    setIsDetailsOpen(false);
+    setTimeout(() => setSelectedProposal(null), 150);
+  };
+
   return (
     <div className="space-y-6">
       <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
@@ -355,7 +368,17 @@ export function EsteiraDePropostasFeature() {
         isRefreshing={isRefreshing}
       />
 
-      <ProposalsTable proposals={filteredProposals} isLoading={isLoading} />
+      <ProposalsTable
+        proposals={filteredProposals}
+        isLoading={isLoading}
+        onOpenDetails={handleOpenDetails}
+      />
+
+      <ProposalDetailsSheet
+        open={isDetailsOpen}
+        proposal={selectedProposal}
+        onClose={handleCloseDetails}
+      />
     </div>
   );
 }
