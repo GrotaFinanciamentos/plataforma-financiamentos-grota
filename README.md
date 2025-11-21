@@ -1,4 +1,4 @@
-# Grota Financiamentos — Monorepo Turborepo
+# Grota Financiamentos 
 
 Este repositório é um *starter Turborepo** adaptado para o projeto **Grota Financiamentos de Veículos**. Contém o website público, a Área do Logista (painel para lojistas) e um CRM interno para gestão de propostas, clientes e contratos — organizados num monorepo para compartilhar UI, configs e utilitários.
 
