@@ -271,55 +271,11 @@ export default function Page() {
     };
   }, [activeTimeframe]);
 
-  const monthlyPerformance = snapshot?.monthlyPerformance ?? [];
   const channelMix = snapshot?.channelMix ?? [];
-  const partnerDealers = snapshot?.partnerDealers ?? [];
-  const governanceAlerts = snapshot?.governanceAlerts ?? [];
+
   const executiveHighlights = snapshot?.executiveHighlights ?? [];
   const proposalPipeline = snapshot?.pipeline ?? [];
-  //@ts-ignore
-  const kpiCards = useMemo<UiKpiCard[]>(() => {
-    const kpis = snapshot?.kpis ?? [];
-    return kpis.map((kpi) => ({
-      ...kpi,
-      icon: KPI_ICON_MAP[kpi.icon as keyof typeof KPI_ICON_MAP] ?? Wallet,
-    }));
-  }, [snapshot?.kpis]);
 
-  const channelMixConfig = useMemo(
-    () => buildChannelMixConfig(channelMix),
-    [channelMix]
-  );
-
-  const pipelineInsights = useMemo(() => {
-    const inAnalysis = proposalPipeline.filter(
-      (proposal) => proposal.status === "Em análise"
-    ).length;
-    const pendingCritical = proposalPipeline.filter((proposal) =>
-      ["Pendente documentação", "Em liquidação"].includes(proposal.status)
-    ).length;
-    const approved = proposalPipeline.filter(
-      (proposal) => proposal.status === "Aprovada"
-    ).length;
-
-    return [
-      {
-        label: "Em análise",
-        value: inAnalysis,
-        helper: "prioridade squad crédito",
-      },
-      {
-        label: "Pendências críticas",
-        value: pendingCritical,
-        helper: "follow-up em até 12h",
-      },
-      {
-        label: "Aprovadas",
-        value: approved,
-        helper: "aguardando assinatura",
-      },
-    ];
-  }, [proposalPipeline]);
 
   const meta = snapshot?.meta ?? {};
   const lastUpdateLabel = meta.lastUpdateLabel ?? "Atualizado às 10h45";
@@ -451,18 +407,6 @@ export default function Page() {
           </div>
         </div>
       </section>
-
-      {/*
-       <RealtimeBridgePanel />
-      */}
-
-
-     
-      
-    
-     
-
-     
     </div>
   );
 }
