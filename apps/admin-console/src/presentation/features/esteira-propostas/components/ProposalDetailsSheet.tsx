@@ -12,6 +12,7 @@ import { Badge } from "@/presentation/layout/components/ui/badge";
 import { Separator } from "@/presentation/layout/components/ui/separator";
 import { proposalStatusStyles } from "./ProposalsTable";
 import { cn } from "@/lib/utils";
+import { ProposalRealtimeChat } from "./ProposalRealtimeChat";
 
 type ProposalDetailsSheetProps = {
   open: boolean;
@@ -197,6 +198,11 @@ export function ProposalDetailsSheet({
               <p>Criada em {formatDateTime(proposal.createdAt)}</p>
               <p>Atualizada em {formatDateTime(proposal.updatedAt)}</p>
             </div>
+
+            <ProposalRealtimeChat
+              proposalId={proposal.id}
+              dealerId={proposal.dealerId}
+            />
           </div>
         )}
       </SheetContent>
