@@ -112,13 +112,13 @@ export function ProposalRealtimeChat({
   };
 
   return (
-    <Card className="border-dashed">
+    <Card className="border border-[#1B4B7C]/20 shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between gap-2 pb-3">
-        <CardTitle className="flex items-center gap-2 text-base">
+        <CardTitle className="flex items-center gap-2 text-base text-[#0F2C55]">
           <MessageSquare className="h-4 w-4 text-primary" />
           Chat em tempo real (admin)
         </CardTitle>
-        <Badge className={cn("gap-1 text-[11px]", statusData.className)}>
+        <Badge className={cn("gap-1 text-[11px] shadow-sm", statusData.className)}>
           <statusData.Icon className="h-3.5 w-3.5" />
           {statusData.label}
         </Badge>
@@ -130,8 +130,8 @@ export function ProposalRealtimeChat({
             Selecione uma proposta para abrir o chat com a administração.
           </p>
         ) : (
-          <div className="rounded-2xl border bg-muted/40 p-3">
-            <div className="flex max-h-[240px] flex-col gap-3 overflow-y-auto pr-1">
+          <div className="rounded-2xl border border-[#1B4B7C]/10 bg-gradient-to-br from-white to-[#0F2C55]/5 p-3">
+            <div className="flex max-h-[260px] flex-col gap-3 overflow-y-auto pr-1">
               {orderedMessages.length === 0 ? (
                 <div className="flex h-28 flex-col items-center justify-center gap-1 text-center text-sm text-muted-foreground">
                   <MessageSquare className="h-5 w-5 text-muted-foreground/70" />
@@ -150,10 +150,10 @@ export function ProposalRealtimeChat({
                     >
                       <div
                         className={cn(
-                          "max-w-[82%] rounded-2xl px-4 py-2 text-sm shadow-sm",
+                          "max-w-[82%] rounded-2xl px-4 py-2 text-sm shadow-sm transition-colors",
                           isSelf
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-background text-foreground border",
+                            ? "bg-[#0F2C55] text-white"
+                            : "bg-white text-foreground border border-[#1B4B7C]/10",
                         )}
                       >
                         <p className="whitespace-pre-line leading-relaxed">
@@ -163,7 +163,7 @@ export function ProposalRealtimeChat({
                           className={cn(
                             "mt-1 block text-[11px]",
                             isSelf
-                              ? "text-primary-foreground/80"
+                              ? "text-white/80"
                               : "text-muted-foreground",
                           )}
                         >
@@ -185,7 +185,7 @@ export function ProposalRealtimeChat({
         )}
       </CardContent>
 
-      <CardFooter className="border-t pt-3">
+      <CardFooter className="border-t border-[#1B4B7C]/10 pt-3">
         <form onSubmit={handleSubmit} className="flex w-full items-center gap-2">
           <Input
             value={message}

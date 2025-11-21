@@ -75,7 +75,7 @@ export function ProposalsTable({
   onOpenDetails,
 }: ProposalsTableProps) {
   return (
-    <div className="rounded-lg border bg-card">
+    <div className="rounded-lg border bg-card shadow-sm">
       <ScrollArea className="w-full">
         <Table className="min-w-[950px]">
           <TableHeader>
