@@ -4,10 +4,10 @@ import { useMemo, useState } from "react";
 import { MessageSquare, Send, Signal, WifiOff } from "lucide-react";
 import { REALTIME_CHANNELS, useRealtimeChannel } from "@grota/realtime-client";
 import { cn } from "@/lib/utils";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/presentation/ui/card";
-import { Badge } from "@/presentation/ui/badge";
-import { Input } from "@/presentation/ui/input";
-import { Button } from "@/presentation/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/presentation/layout/components/ui/card";
+import { Badge } from "@/presentation/layout/components/ui/badge";
+import { Input } from "@/presentation/layout/components/ui/input";
+import { Button } from "@/presentation/layout/components/ui/button";
 
 type ProposalRealtimeChatProps = {
   proposalId: number | null;
@@ -15,7 +15,7 @@ type ProposalRealtimeChatProps = {
 };
 
 const REALTIME_URL = process.env.NEXT_PUBLIC_REALTIME_WS_URL;
-const IDENTITY = "logista";
+const IDENTITY = "admin";
 const CHANNEL = REALTIME_CHANNELS.CHAT;
 
 const statusStyles = {
@@ -74,7 +74,7 @@ export function ProposalRealtimeChat({
     channel: CHANNEL,
     identity: IDENTITY,
     url: REALTIME_URL,
-    metadata: { origin: "dealer-panel" },
+    metadata: { origin: "admin-panel" },
   });
 
   const filteredMessages = useMemo(() => {
@@ -112,13 +112,13 @@ export function ProposalRealtimeChat({
   };
 
   return (
-    <Card className="border border-[#1B4B7C]/20 shadow-sm">
+    <Card className="border-dashed">
       <CardHeader className="flex flex-row items-center justify-between gap-2 pb-3">
-        <CardTitle className="flex items-center gap-2 text-base text-[#0F2C55]">
+        <CardTitle className="flex items-center gap-2 text-base">
           <MessageSquare className="h-4 w-4 text-primary" />
-          Chat em tempo real (admin)
+          Chat em tempo real (logista)
         </CardTitle>
-        <Badge className={cn("gap-1 text-[11px] shadow-sm", statusData.className)}>
+        <Badge className={cn("gap-1 text-[11px]", statusData.className)}>
           <statusData.Icon className="h-3.5 w-3.5" />
           {statusData.label}
         </Badge>
@@ -127,11 +127,11 @@ export function ProposalRealtimeChat({
       <CardContent className="space-y-3">
         {!proposalId ? (
           <p className="text-sm text-muted-foreground">
-            Selecione uma proposta para abrir o chat com a administração.
+            Selecione uma proposta para abrir o chat com o logista.
           </p>
         ) : (
-          <div className="rounded-2xl border border-[#1B4B7C]/10 bg-gradient-to-br from-white to-[#0F2C55]/5 p-3">
-            <div className="flex max-h-[260px] flex-col gap-3 overflow-y-auto pr-1">
+          <div className="rounded-2xl border bg-muted/40 p-3">
+            <div className="flex max-h-[240px] flex-col gap-3 overflow-y-auto pr-1">
               {orderedMessages.length === 0 ? (
                 <div className="flex h-28 flex-col items-center justify-center gap-1 text-center text-sm text-muted-foreground">
                   <MessageSquare className="h-5 w-5 text-muted-foreground/70" />
@@ -150,10 +150,10 @@ export function ProposalRealtimeChat({
                     >
                       <div
                         className={cn(
-                          "max-w-[82%] rounded-2xl px-4 py-2 text-sm shadow-sm transition-colors",
+                          "max-w-[82%] rounded-2xl px-4 py-2 text-sm shadow-sm",
                           isSelf
-                            ? "bg-[#0F2C55] text-white"
-                            : "bg-white text-foreground border border-[#1B4B7C]/10",
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-background text-foreground border",
                         )}
                       >
                         <p className="whitespace-pre-line leading-relaxed">
@@ -163,7 +163,7 @@ export function ProposalRealtimeChat({
                           className={cn(
                             "mt-1 block text-[11px]",
                             isSelf
-                              ? "text-white/80"
+                              ? "text-primary-foreground/80"
                               : "text-muted-foreground",
                           )}
                         >
@@ -185,12 +185,12 @@ export function ProposalRealtimeChat({
         )}
       </CardContent>
 
-      <CardFooter className="border-t border-[#1B4B7C]/10 pt-3">
+      <CardFooter className="border-t pt-3">
         <form onSubmit={handleSubmit} className="flex w-full items-center gap-2">
           <Input
             value={message}
             onChange={(event) => setMessage(event.target.value)}
-            placeholder="Envie uma atualização para a equipe Grota..."
+            placeholder="Envie uma atualização para o logista..."
             disabled={status !== "connected" || !proposalId}
           />
           <Button
