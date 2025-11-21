@@ -78,7 +78,7 @@ export function ProposalDetailsSheet({
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="max-h-[82vh] w-full max-w-6xl space-y-5 overflow-y-auto border border-[#1B4B7C]/20 bg-gradient-to-b from-[#0F2C55]/5 to-white px-0 sm:px-0">
+      <DialogContent className="max-h-[78vh] w-full max-w-6xl space-y-5 overflow-y-auto border border-[#1B4B7C]/20 bg-gradient-to-b from-[#0F2C55]/5 to-white px-0 sm:px-0">
         <DialogHeader className="px-6 pt-4">
           <DialogTitle className="flex items-center justify-between gap-3 text-xl">
             <div className="flex flex-col gap-1">
@@ -115,121 +115,125 @@ export function ProposalDetailsSheet({
             Selecione uma ficha para visualizar os detalhes.
           </div>
         ) : (
-          <div className="flex flex-col gap-5 overflow-y-auto pr-1 pb-6">
-            <div className="mx-6 rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-wide text-[#1B4B7C]/70">
-                    Status atual
+          <div className="grid gap-4 px-6 pb-6 md:grid-cols-[2fr_1fr]">
+            <div className="flex flex-col gap-4 overflow-y-auto pr-0 md:max-h-[60vh] md:pr-2">
+              <div className="rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="space-y-1">
+                    <p className="text-xs uppercase tracking-wide text-[#1B4B7C]/70">
+                      Status atual
+                    </p>
+                    <p className="text-base font-semibold text-[#0F2C55]">
+                      {statusStyle?.label}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Última atualização em {formatDateTime(proposal.updatedAt)}
+                    </p>
+                  </div>
+                  <div className="rounded-lg bg-[#1B4B7C]/5 px-4 py-2 text-right text-xs text-[#0F2C55]">
+                    <p className="font-semibold">
+                      Dealer #{proposal.dealerId ?? "—"}
+                    </p>
+                    <p className="text-xs text-[#1B4B7C]/80">
+                      Operador #{proposal.sellerId ?? "—"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm space-y-2">
+                  <p className="text-sm font-semibold text-[#0F2C55]">Cliente</p>
+                  <p className="text-sm font-medium">{proposal.customerName}</p>
+                  <p className="text-sm text-muted-foreground">
+                    CPF {maskCpf(proposal.customerCpf)}
                   </p>
-                  <p className="text-base font-semibold text-[#0F2C55]">
-                    {statusStyle?.label}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Última atualização em {formatDateTime(proposal.updatedAt)}
+                  <p className="text-sm text-muted-foreground">
+                    Nascimento {formatDate(proposal.customerBirthDate)}
                   </p>
                 </div>
-                <div className="rounded-lg bg-[#1B4B7C]/5 px-4 py-2 text-right text-xs text-[#0F2C55]">
-                  <p className="font-semibold">
+
+                <div className="rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm space-y-2">
+                  <p className="text-sm font-semibold text-[#0F2C55]">Contato</p>
+                  <p className="text-sm text-muted-foreground">
+                    {proposal.customerEmail || "Sem e-mail informado"}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {maskPhone(proposal.customerPhone)}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    CNH {proposal.hasCnh ? "Sim" : "Não"} · Cat. {proposal.cnhCategory}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm space-y-2">
+                  <p className="text-sm font-semibold text-[#0F2C55]">Veículo</p>
+                  <p className="text-sm">
+                    {proposal.vehicleBrand} · {proposal.vehicleModel} ({proposal.vehicleYear})
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Placa {proposal.vehiclePlate || "—"}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    FIPE {proposal.fipeCode} · {formatCurrency(proposal.fipeValue)}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm space-y-2">
+                  <p className="text-sm font-semibold text-[#0F2C55]">Valores</p>
+                  <p className="text-sm text-muted-foreground">
+                    Entrada {formatCurrency(proposal.downPaymentValue)}
+                  </p>
+                  <p className="text-sm font-semibold text-emerald-600">
+                    {formatCurrency(proposal.financedValue)} financiado
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm space-y-2">
+                  <p className="text-sm font-semibold text-[#0F2C55]">Banco / Produto</p>
+                  <p className="text-sm text-muted-foreground">Banco parceiro</p>
+                  <p className="text-sm text-muted-foreground">Produto personalizado</p>
+                  <p className="text-xs text-muted-foreground">
+                    Referência FIPE {proposal.fipeCode}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm space-y-2">
+                  <p className="text-sm font-semibold text-[#0F2C55]">Responsáveis</p>
+                  <p className="text-sm">
                     Dealer #{proposal.dealerId ?? "—"}
                   </p>
-                  <p className="text-xs text-[#1B4B7C]/80">
+                  <p className="text-sm text-muted-foreground">
                     Operador #{proposal.sellerId ?? "—"}
                   </p>
                 </div>
               </div>
-            </div>
 
-            <div className="grid gap-4 px-6 md:grid-cols-2">
+              <Separator />
+
               <div className="rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm space-y-2">
-                <p className="text-sm font-semibold text-[#0F2C55]">Cliente</p>
-                <p className="text-sm font-medium">{proposal.customerName}</p>
-                <p className="text-sm text-muted-foreground">
-                  CPF {maskCpf(proposal.customerCpf)}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Nascimento {formatDate(proposal.customerBirthDate)}
+                <p className="text-sm font-semibold text-[#0F2C55]">Bancos consultados / observações</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {proposal.notes?.trim() || "Nenhum banco ou observação informado para esta proposta."}
                 </p>
               </div>
 
-              <div className="rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm space-y-2">
-                <p className="text-sm font-semibold text-[#0F2C55]">Contato</p>
-                <p className="text-sm text-muted-foreground">
-                  {proposal.customerEmail || "Sem e-mail informado"}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {maskPhone(proposal.customerPhone)}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  CNH {proposal.hasCnh ? "Sim" : "Não"} · Cat. {proposal.cnhCategory}
-                </p>
+              <div className="rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm space-y-1 text-sm text-muted-foreground">
+                <p>Criada em {formatDateTime(proposal.createdAt)}</p>
+                <p>Atualizada em {formatDateTime(proposal.updatedAt)}</p>
               </div>
             </div>
 
-            <div className="grid gap-4 px-6 md:grid-cols-2">
-              <div className="rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm space-y-2">
-                <p className="text-sm font-semibold text-[#0F2C55]">Veículo</p>
-                <p className="text-sm">
-                  {proposal.vehicleBrand} · {proposal.vehicleModel} ({proposal.vehicleYear})
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Placa {proposal.vehiclePlate || "—"}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  FIPE {proposal.fipeCode} · {formatCurrency(proposal.fipeValue)}
-                </p>
-              </div>
-
-              <div className="rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm space-y-2">
-                <p className="text-sm font-semibold text-[#0F2C55]">Valores</p>
-                <p className="text-sm text-muted-foreground">
-                  Entrada {formatCurrency(proposal.downPaymentValue)}
-                </p>
-                <p className="text-sm font-semibold text-emerald-600">
-                  {formatCurrency(proposal.financedValue)} financiado
-                </p>
-              </div>
+            <div className="flex flex-col gap-4 md:pl-2">
+              <ProposalRealtimeChat
+                proposalId={proposal.id}
+                dealerId={proposal.dealerId}
+              />
             </div>
-
-            <div className="grid gap-4 px-6 md:grid-cols-2">
-              <div className="rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm space-y-2">
-                <p className="text-sm font-semibold text-[#0F2C55]">Banco / Produto</p>
-                <p className="text-sm text-muted-foreground">Banco parceiro</p>
-                <p className="text-sm text-muted-foreground">Produto personalizado</p>
-                <p className="text-xs text-muted-foreground">
-                  Referência FIPE {proposal.fipeCode}
-                </p>
-              </div>
-
-              <div className="rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm space-y-2">
-                <p className="text-sm font-semibold text-[#0F2C55]">Responsáveis</p>
-                <p className="text-sm">
-                  Dealer #{proposal.dealerId ?? "—"}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Operador #{proposal.sellerId ?? "—"}
-                </p>
-              </div>
-            </div>
-
-            <Separator />
-
-            <div className="mx-6 rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm space-y-2">
-              <p className="text-sm font-semibold text-[#0F2C55]">Bancos consultados / observações</p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {proposal.notes?.trim() || "Nenhum banco ou observação informado para esta proposta."}
-              </p>
-            </div>
-
-            <div className="mx-6 rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm space-y-1 text-sm text-muted-foreground">
-              <p>Criada em {formatDateTime(proposal.createdAt)}</p>
-              <p>Atualizada em {formatDateTime(proposal.updatedAt)}</p>
-            </div>
-
-            <ProposalRealtimeChat
-              proposalId={proposal.id}
-              dealerId={proposal.dealerId}
-            />
           </div>
         )}
       </DialogContent>
