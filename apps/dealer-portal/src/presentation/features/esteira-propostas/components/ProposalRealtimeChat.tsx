@@ -4,10 +4,11 @@ import { useMemo, useState } from "react";
 import { MessageSquare, Send, Signal, WifiOff } from "lucide-react";
 import { REALTIME_CHANNELS, useRealtimeChannel } from "@grota/realtime-client";
 import { cn } from "@/lib/utils";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/presentation/layout/components/ui/card";
-import { Badge } from "@/presentation/layout/components/ui/badge";
-import { Input } from "@/presentation/layout/components/ui/input";
-import { Button } from "@/presentation/layout/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/presentation/ui/card";
+import { Badge } from "@/presentation/ui/badge";
+import { Input } from "@/presentation/ui/input";
+import { Button } from "@/presentation/ui/button";
+
 
 type ProposalRealtimeChatProps = {
   proposalId: number | null;
