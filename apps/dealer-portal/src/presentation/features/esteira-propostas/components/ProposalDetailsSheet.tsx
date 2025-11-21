@@ -78,7 +78,7 @@ export function ProposalDetailsSheet({
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="max-h-[78vh] w-full max-w-7xl space-y-5 overflow-y-auto border border-[#1B4B7C]/20 bg-gradient-to-b from-[#0F2C55]/5 to-white px-0 sm:px-0">
+      <DialogContent className="max-h-[78vh] w-full max-w-7xl space-y-5 overflow-y-auto border border-[#1B4B7C]/20 bg-gradient-to-b from-[#0F2C55]/5 to-white px-2 sm:px-4">
         <DialogHeader className="px-6 pt-4">
           <DialogTitle className="flex items-center justify-between gap-3 text-xl">
             <div className="flex flex-col gap-1">
@@ -115,8 +115,8 @@ export function ProposalDetailsSheet({
             Selecione uma ficha para visualizar os detalhes.
           </div>
         ) : (
-          <div className="grid gap-4 px-6 pb-6 md:grid-cols-[2fr_1fr]">
-            <div className="flex flex-col gap-4 overflow-y-auto pr-0 md:max-h-[60vh] md:pr-2">
+          <div className="grid gap-6 px-4 pb-6 md:grid-cols-[2.2fr_1fr]">
+            <div className="flex flex-col gap-4 overflow-y-auto pr-0 md:max-h-[60vh] md:pr-4">
               <div className="rounded-xl border border-[#1B4B7C]/10 bg-white p-4 shadow-sm">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="space-y-1">
@@ -228,7 +228,7 @@ export function ProposalDetailsSheet({
               </div>
             </div>
 
-            <div className="flex flex-col gap-4 md:pl-2">
+            <div className="flex flex-col gap-4 md:pl-2 lg:pl-4 md:pt-1">
               <ProposalRealtimeChat
                 proposalId={proposal.id}
                 dealerId={proposal.dealerId}
