@@ -277,7 +277,7 @@ export default function Page() {
   const governanceAlerts = snapshot?.governanceAlerts ?? [];
   const executiveHighlights = snapshot?.executiveHighlights ?? [];
   const proposalPipeline = snapshot?.pipeline ?? [];
-//@ts-ignore
+  //@ts-ignore
   const kpiCards = useMemo<UiKpiCard[]>(() => {
     const kpis = snapshot?.kpis ?? [];
     return kpis.map((kpi) => ({
@@ -377,11 +377,10 @@ export default function Page() {
                     variant="ghost"
                     disabled={loading && isActive}
                     onClick={() => setActiveTimeframe(filter.value)}
-                    className={`rounded-full border border-white/20 px-4 text-xs uppercase tracking-wide backdrop-blur ${
-                      isActive
+                    className={`rounded-full border border-white/20 px-4 text-xs uppercase tracking-wide backdrop-blur ${isActive
                         ? "bg-white text-slate-900 font-semibold shadow-lg hover:bg-white"
                         : "text-white/80 hover:bg-white/10 hover:text-white"
-                    }`}
+                      }`}
                   >
                     {filter.label}
                   </Button>
@@ -394,23 +393,23 @@ export default function Page() {
             <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
               {executiveHighlights.length
                 ? executiveHighlights.map((highlight) => (
-                    <div
-                      key={highlight.label}
-                      className="rounded-2xl border border-white/20 bg-white/5 p-4 text-white/90 backdrop-blur-md"
-                    >
-                      <p className="text-[0.6rem] uppercase tracking-[0.35em] text-white/60">
-                        {highlight.label}
-                      </p>
-                      <p className="mt-2 text-xl font-semibold text-white">
-                        {highlight.value}
-                      </p>
-                      <p className="text-sm text-white/70">{highlight.helper}</p>
-                    </div>
-                  ))
+                  <div
+                    key={highlight.label}
+                    className="rounded-2xl border border-white/20 bg-white/5 p-4 text-white/90 backdrop-blur-md"
+                  >
+                    <p className="text-[0.6rem] uppercase tracking-[0.35em] text-white/60">
+                      {highlight.label}
+                    </p>
+                    <p className="mt-2 text-xl font-semibold text-white">
+                      {highlight.value}
+                    </p>
+                    <p className="text-sm text-white/70">{highlight.helper}</p>
+                  </div>
+                ))
                 : isInitialLoading
                   ? Array.from({ length: 3 }).map((_, index) => (
-                      <LoadingHighlightSkeleton key={index} />
-                    ))
+                    <LoadingHighlightSkeleton key={index} />
+                  ))
                   : (
                     <div className="rounded-2xl border border-dashed border-white/20 bg-white/5 p-4 text-sm text-white/70 backdrop-blur-md">
                       Sem destaques executivos para o período selecionado.
@@ -456,67 +455,66 @@ export default function Page() {
       {/*
        <RealtimeBridgePanel />
       */}
-     
+
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {kpiCards.length
           ? kpiCards.map((card) => {
-              const Icon = card.icon;
-              const isUp = card.trend === "up";
+            const Icon = card.icon;
+            const isUp = card.trend === "up";
 
-              return (
-                <Card key={card.label} className="border-border/60">
-                  <CardHeader className="gap-3">
-                    <div className="flex items-center justify-between">
-                      <div className="rounded-full bg-primary/10 p-2 text-primary">
-                        <Icon className="size-5" />
-                      </div>
-                      <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                        {card.helper}
-                      </span>
+            return (
+              <Card key={card.label} className="border-border/60">
+                <CardHeader className="gap-3">
+                  <div className="flex items-center justify-between">
+                    <div className="rounded-full bg-primary/10 p-2 text-primary">
+                      <Icon className="size-5" />
                     </div>
-                    <CardTitle className="text-base font-medium text-foreground/90">
-                      {card.label}
-                    </CardTitle>
-                    <CardDescription className="text-4xl font-semibold text-foreground">
-                      {card.value}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="border-t border-dashed border-border/60 pt-4">
-                    <div
-                      className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium ${
-                        isUp
-                          ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-200"
-                          : "bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-200"
+                    <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      {card.helper}
+                    </span>
+                  </div>
+                  <CardTitle className="text-base font-medium text-foreground/90">
+                    {card.label}
+                  </CardTitle>
+                  <CardDescription className="text-4xl font-semibold text-foreground">
+                    {card.value}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="border-t border-dashed border-border/60 pt-4">
+                  <div
+                    className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium ${isUp
+                        ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-200"
+                        : "bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-200"
                       }`}
-                    >
-                      {isUp ? (
-                        <ArrowUpRight className="size-4" />
-                      ) : (
-                        <ArrowDownRight className="size-4" />
-                      )}
-                      {card.delta}
-                    </div>
-                    {card.detail ? (
-                      <p className="mt-3 text-xs text-muted-foreground/90">
-                        {card.detail}
-                      </p>
-                    ) : null}
-                  </CardContent>
-                </Card>
-              );
-            })
+                  >
+                    {isUp ? (
+                      <ArrowUpRight className="size-4" />
+                    ) : (
+                      <ArrowDownRight className="size-4" />
+                    )}
+                    {card.delta}
+                  </div>
+                  {card.detail ? (
+                    <p className="mt-3 text-xs text-muted-foreground/90">
+                      {card.detail}
+                    </p>
+                  ) : null}
+                </CardContent>
+              </Card>
+            );
+          })
           : isInitialLoading
             ? Array.from({ length: 4 }).map((_, index) => (
-                <LoadingCardSkeleton key={index} />
-              ))
+              <LoadingCardSkeleton key={index} />
+            ))
             : (
-                <Card className="border-border/60 sm:col-span-2 xl:col-span-4">
-                  <CardContent className="py-10 text-center text-sm text-muted-foreground">
-                    Sem indicadores para o período selecionado.
-                  </CardContent>
-                </Card>
-              )}
+              <Card className="border-border/60 sm:col-span-2 xl:col-span-4">
+                <CardContent className="py-10 text-center text-sm text-muted-foreground">
+                  Sem indicadores para o período selecionado.
+                </CardContent>
+              </Card>
+            )}
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[2fr,1fr]">
@@ -563,8 +561,8 @@ export default function Page() {
             )}
           </CardContent>
         </Card>
-
-        <Card className="border-border/60">
+        {/*
+          <Card className="border-border/60">
           <CardHeader className="border-b border-border/60">
             <CardTitle>Governança e conformidade</CardTitle>
             <CardDescription>
@@ -605,6 +603,8 @@ export default function Page() {
             )}
           </CardContent>
         </Card>
+        */}
+      
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
@@ -845,10 +845,9 @@ export default function Page() {
                         </td>
                         <td className="py-3 pr-4">
                           <span
-                            className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ${
-                              statusClasses[proposal.status] ??
+                            className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ${statusClasses[proposal.status] ??
                               "bg-muted text-foreground"
-                            }`}
+                              }`}
                           >
                             {proposal.status}
                           </span>
