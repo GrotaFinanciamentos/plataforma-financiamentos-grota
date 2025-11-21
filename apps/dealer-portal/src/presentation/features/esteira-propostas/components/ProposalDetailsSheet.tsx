@@ -78,7 +78,7 @@ export function ProposalDetailsSheet({
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="max-h-[90vh] w-full max-w-5xl space-y-5 overflow-y-auto border border-[#1B4B7C]/20 bg-gradient-to-b from-[#0F2C55]/5 to-white px-0 sm:px-0">
+      <DialogContent className="max-h-[82vh] w-full max-w-6xl space-y-5 overflow-y-auto border border-[#1B4B7C]/20 bg-gradient-to-b from-[#0F2C55]/5 to-white px-0 sm:px-0">
         <DialogHeader className="px-6 pt-4">
           <DialogTitle className="flex items-center justify-between gap-3 text-xl">
             <div className="flex flex-col gap-1">
