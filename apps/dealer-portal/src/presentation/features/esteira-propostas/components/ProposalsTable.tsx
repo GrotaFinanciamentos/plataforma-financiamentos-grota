@@ -93,7 +93,7 @@ export function ProposalsTable({
                 Status atual / Analista
               </TableHead>
               <TableHead className="font-semibold">
-                Enviado / Operador
+                Enviado / Vendedor
               </TableHead>
             </TableRow>
           </TableHeader>

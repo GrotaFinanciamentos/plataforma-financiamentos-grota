@@ -3,124 +3,25 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  ArrowDownRight,
   ArrowUpRight,
-  ShieldCheck,
-  TrendingUp,
-  Wallet,
 } from "lucide-react";
-import {
-  Bar,
-  BarChart,
-  Cell,
-  CartesianGrid,
-  Line,
-  LineChart,
-  Pie,
-  PieChart,
-  XAxis,
-  YAxis,
-} from "recharts";
 
 import dashboardServices, {
-  type DashboardChannelMixSegment,
   type DashboardSnapshotResponse,
   type DashboardTimeframe,
 } from "@/application/services/DashboardServices/DashboardServices";
 import { Badge } from "@/presentation/ui/badge";
 import { Button } from "@/presentation/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/presentation/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/presentation/ui/chart";
+
 import { Skeleton } from "@/presentation/ui/skeleton";
-import { RealtimeBridgePanel } from "./_components/RealtimeBridgePanel";
-
-const KPI_ICON_MAP = {
-  wallet: Wallet,
-  trending: TrendingUp,
-  approvals: ShieldCheck,
-  shield: ShieldCheck,
-  sla: ShieldCheck,
-} as const;
-
-type UiKpiCard =
-  DashboardSnapshotResponse["kpis"][number] & { icon: typeof Wallet };
-
-const performanceChartConfig = {
-  volume: {
-    label: "Volume financiado",
-    color: "hsl(215 85% 63%)",
-  },
-  approvals: {
-    label: "Taxa de aprovação",
-    color: "hsl(160 84% 39%)",
-  },
-} satisfies ChartConfig;
-
-const DEFAULT_CHANNEL_COLORS = [
-  "hsl(214 85% 60%)",
-  "hsl(199 89% 48%)",
-  "hsl(161 94% 30%)",
-  "hsl(32 95% 45%)",
-  "hsl(268 85% 60%)",
-  "hsl(9 93% 62%)",
-];
 
 const timeframeFilters = [
   { label: "Últimos 7 dias", value: "7d" },
   { label: "Últimos 30 dias", value: "30d" },
   { label: "Último trimestre", value: "quarter" },
 ] as const;
-
-const statusClasses: Record<string, string> = {
-  Aprovada:
-    "bg-emerald-50 text-emerald-700 border border-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-100 dark:border-emerald-500/20",
-  "Em análise":
-    "bg-sky-50 text-sky-700 border border-sky-100 dark:bg-sky-500/10 dark:text-sky-100 dark:border-sky-500/20",
-  "Pendente documentação":
-    "bg-amber-50 text-amber-700 border border-amber-100 dark:bg-amber-500/10 dark:text-amber-100 dark:border-amber-500/20",
-  Recusada:
-    "bg-rose-50 text-rose-700 border border-rose-100 dark:bg-rose-500/10 dark:text-rose-100 dark:border-rose-500/20",
-  "Em liquidação":
-    "bg-indigo-50 text-indigo-700 border border-indigo-100 dark:bg-indigo-500/10 dark:text-indigo-100 dark:border-indigo-500/20",
-};
-
-const toneClasses: Record<"success" | "warning" | "info", string> = {
-  success:
-    "bg-emerald-500/15 text-emerald-200 border border-emerald-400/30 backdrop-blur",
-  warning:
-    "bg-amber-500/15 text-amber-100 border border-amber-400/30 backdrop-blur",
-  info: "bg-sky-500/15 text-sky-100 border border-sky-400/30 backdrop-blur",
-};
-
-const buildChannelMixConfig = (
-  segments: DashboardChannelMixSegment[]
-): ChartConfig => {
-  if (!segments.length) {
-    return {};
-  }
-
-  return segments.reduce((config, segment, index) => {
-    config[segment.key] = {
-      label: segment.label,
-      color: DEFAULT_CHANNEL_COLORS[index % DEFAULT_CHANNEL_COLORS.length],
-    };
-    return config;
-  }, {} as ChartConfig);
-};
 
 const getErrorMessage = (error: unknown) => {
   if (
@@ -144,90 +45,12 @@ const getErrorMessage = (error: unknown) => {
   return "Não foi possível carregar o dashboard.";
 };
 
-const LoadingCardSkeleton = () => (
-  <Card className="border-border/60">
-    <CardContent className="space-y-4 pt-6">
-      <Skeleton className="h-4 w-32" />
-      <Skeleton className="h-8 w-28" />
-      <Skeleton className="h-3 w-24" />
-    </CardContent>
-  </Card>
-);
 
 const LoadingHighlightSkeleton = () => (
   <div className="rounded-2xl border border-white/20 bg-white/5 p-4 backdrop-blur-md">
     <Skeleton className="h-3 w-20 bg-white/40" />
     <Skeleton className="mt-3 h-6 w-24 bg-white/60" />
     <Skeleton className="mt-2 h-4 w-28 bg-white/40" />
-  </div>
-);
-
-const ListCardSkeleton = ({ rows = 3 }: { rows?: number }) => (
-  <div className="space-y-5">
-    {Array.from({ length: rows }).map((_, index) => (
-      <div key={index} className="space-y-2">
-        <div className="flex items-center justify-between text-sm font-medium">
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-40" />
-            <Skeleton className="h-3 w-28" />
-          </div>
-          <div className="space-y-1 text-right">
-            <Skeleton className="ml-auto h-4 w-24" />
-            <Skeleton className="ml-auto h-3 w-16" />
-          </div>
-        </div>
-        <Skeleton className="h-2 rounded-full" />
-      </div>
-    ))}
-  </div>
-);
-
-const ChartSkeleton = ({ height = 240 }: { height?: number }) => (
-  <Skeleton
-    className="w-full rounded-xl border border-dashed border-border/60"
-    style={{ height }}
-  />
-);
-
-const TableSkeleton = ({ rows = 5 }: { rows?: number }) => (
-  <table className="w-full min-w-[620px] text-sm">
-    <thead className="text-muted-foreground">
-      <tr className="border-b border-border/60 text-left">
-        {Array.from({ length: 6 }).map((_, index) => (
-          <th key={index} className="pb-3 pr-4 font-medium">
-            <Skeleton className="h-4 w-24" />
-          </th>
-        ))}
-      </tr>
-    </thead>
-    <tbody>
-      {Array.from({ length: rows }).map((_, index) => (
-        <tr
-          key={index}
-          className="border-b border-border/40 text-left [&_td]:py-3 [&_td]:pr-4"
-        >
-          {Array.from({ length: 6 }).map((__, cellIndex) => (
-            <td key={cellIndex}>
-              <Skeleton className="h-4 w-full" />
-            </td>
-          ))}
-        </tr>
-      ))}
-    </tbody>
-  </table>
-);
-
-const EmptyState = ({
-  message,
-  className = "",
-}: {
-  message: string;
-  className?: string;
-}) => (
-  <div
-    className={`text-muted-foreground flex items-center justify-center text-sm ${className}`}
-  >
-    {message}
   </div>
 );
 
@@ -271,11 +94,8 @@ export default function Page() {
     };
   }, [activeTimeframe]);
 
-  const channelMix = snapshot?.channelMix ?? [];
 
   const executiveHighlights = snapshot?.executiveHighlights ?? [];
-  const proposalPipeline = snapshot?.pipeline ?? [];
-
 
   const meta = snapshot?.meta ?? {};
   const lastUpdateLabel = meta.lastUpdateLabel ?? "Atualizado às 10h45";

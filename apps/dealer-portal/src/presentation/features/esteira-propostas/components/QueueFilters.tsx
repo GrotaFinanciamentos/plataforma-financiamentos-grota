@@ -9,6 +9,7 @@ import {
 } from "@/presentation/ui/select";
 import { Filter, Plus, RefreshCw, Search } from "lucide-react";
 import { ProposalStatus } from "@/application/core/@types/Proposals/Proposal";
+import { useRouter } from "next/navigation";
 
 type QueueFiltersProps = {
   filters: {
@@ -47,6 +48,8 @@ export function QueueFilters({
     });
   };
 
+  const router = useRouter();
+
   return (
     <div className="space-y-4">
       <div className="rounded-lg border bg-card p-4">
@@ -68,7 +71,7 @@ export function QueueFilters({
 
           <div className="flex-1 space-y-2">
             <label className="text-sm font-medium text-muted-foreground">
-              Operador
+              Vendedor
             </label>
             <Select
               value={filters.operatorId ?? "all"}
@@ -168,7 +171,7 @@ export function QueueFilters({
               <RefreshCw className="size-4" />
               Atualizar
             </Button>
-            <Button className="gap-2" onClick={onCreate}>
+            <Button className="gap-2" onClick={() => router.replace("/simulacao")}>
               <Plus className="size-4" />
               Nova Ficha
             </Button>
