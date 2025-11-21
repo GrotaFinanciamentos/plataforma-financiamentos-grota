@@ -17,7 +17,7 @@ function buildRedirectResponse(url: string, request: NextRequest) {
       : new URL(url, request.url);
     return NextResponse.redirect(target);
   } catch {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/esteira-propostas", request.url));
   }
 }
 
